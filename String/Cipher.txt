@@ -1,0 +1,31 @@
+import os
+
+f = open('cipher.txt', 'r')
+text = f.read()
+chars = map(lambda x: int(x), text.split(','))
+
+#97 - 122
+for i in range(97, 123, 1):
+    for j in range(97, 123, 1):
+        for k in range(97, 123, 1):
+            passwd = list()
+            passwd.append(i)
+            passwd.append(j)
+            passwd.append(k)
+            #print 'passwd=', chr(passwd[0]) + chr(passwd[1]) + chr(passwd[2])
+
+            message = ''
+            found = True
+            a = 0
+            while a < len(chars):
+                n_char = chars[a] ^ passwd[a%3]
+                #print n_char, i, j, k, a
+                message = message + chr(n_char)
+                a = a + 1
+            if ' is ' in message and ' and ' in message:
+                print chr(i), chr(j), chr(k)
+                print message, passwd
+                cnt = 0
+                for letter in message:
+                    cnt = cnt + ord(letter)
+                print cnt
