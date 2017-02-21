@@ -1,0 +1,8 @@
+def traverse(list1, i, j, total):
+    if i == len(list1):
+        return total
+    else:
+        for k in range(len(list1[i])):
+            total = total + list1[i][j]
+            return max(traverse(list1, i + 1, j, total), \
+                       traverse(list1, i + 1, j + 1, total))

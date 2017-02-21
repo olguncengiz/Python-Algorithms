@@ -1,0 +1,19 @@
+def maxDiff(a):
+    difference, left, right, currentRight, currentLeft = 0, 0, 0, 0, 0
+    for i in range(len(a)):
+        if a[i] < a[currentLeft]:
+            currentLeft = i
+            if currentLeft > currentRight:
+                currentRight = currentLeft
+        if a[i] >= a[currentRight]:
+            currentRight = i
+
+        if (a[currentRight] - a[currentLeft]) > difference:
+            difference = a[currentRight] - a[currentLeft]
+            right = currentRight
+            left = currentLeft
+    return [difference, left, right]
+
+a = [3, 4, 10, 7, 6, 13, 0, 5, 12, 11, 9]
+
+print maxDiff(a)

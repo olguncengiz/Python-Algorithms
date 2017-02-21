@@ -1,0 +1,110 @@
+def readHands():
+    with open('p054_poker.txt', 'r') as f:
+        for line in f:
+            yield line
+
+def value(card):
+    if card[0] == 'A':
+        return 14
+    if card[0] == 'K':
+        return 13
+    if card[0] == 'Q':
+        return 12
+    if card[0] == 'J':
+        return 11
+    if card[0] == 'T':
+        return 10
+    if card[0] in '23456789':
+        return int(card[0])
+
+def suit(card):
+    return card[1]
+
+def rank(p):
+    suit_set = set()
+    num_count = dict()
+    for card in p:
+        suit_set.add(suit(card))
+        if value(card) in num_count.keys():
+            num_count[value(card)] = num_count[value(card)] + 1
+        else:
+            num_count[value(card)] = 1
+
+    
+    if 4 in num_count.values():
+        for key, val in num_count.iteritems():
+            if val == 4:
+                # Four of a kind
+                return [8, key]
+    elif 3 in num_count.values():
+        if 2 in num_count.values():
+            for key, val in num_count.iteritems():
+                if val == 3:
+                    # Full house
+                    return [7, key]
+        else:
+            for key, val in num_count.iteritems():
+                if val == 3:
+                    # Three of a kind
+                    return [4, key]
+    elif 2 in num_count.values():
+        if len(num_count.keys()) == 3:
+            high_card = 0
+            for key, val in num_count.iteritems():
+                if val == 2 and key > high_card:
+                    high_card = key
+            # Two pairs
+            return [3, high_card]
+        else:
+            for key, val in num_count.iteritems():
+                if val == 2:
+                    # One pair
+                    return [2, key]
+    else:
+        nums = sorted(list(num_count.keys()))
+        straight = True
+        for i in range(1, len(nums), 1):
+            if nums[i] - nums[i - 1] != 1:
+                straight = False
+
+        if len(suit_set) == 1 and straight:
+            if nums[0] == 10:
+                # Royal flush
+                return [10, 0]
+            else:
+                # Straight flush
+                return [9, nums[0]]
+        elif straight:
+            # Straight:
+            return [5, nums[-1]]
+        elif len(suit_set) == 1:
+            # Flush
+            return [6, nums[-1]]
+        else:
+            # High card
+            return [1, max(map(lambda x: value(x), p))]
+
+r = readHands()
+cnt = 0
+winner = ''
+while True:
+    try:
+        winner = 'p2'
+        hands = r.next()
+        hands = hands[:-1]
+        p1 = hands.split(' ')[:5]
+        p2 = hands.split(' ')[5:]
+        ph1 = rank(p1)
+        ph2 = rank(p2)
+        if ph1[0] > ph2[0]:
+            cnt = cnt + 1
+            winner = 'p1'
+        elif ph1[0] == ph2[0] and ph1[1] > ph2[1]:
+            cnt = cnt + 1
+            winner = 'p1'
+        
+        print p1, p2, ph1, ph2, winner, cnt
+    except StopIteration:
+        break
+
+print cnt

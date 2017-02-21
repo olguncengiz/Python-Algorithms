@@ -1,0 +1,17 @@
+def sum_triangle(list1):
+    for i in range(len(list1)):
+        #print "i=", i
+        #print "len(list1[i]", len(list1[i])
+        if i > 0:
+            for j in range(len(list1[i])):
+                #print "j=", j
+                if j == 0:
+                    #print "j == 0"
+                    list1[i][j] = list1[i][j] + list1[i - 1][j]
+                elif j == len(list1[i]) - 1:
+                    #print "j == last"
+                    list1[i][j] = list1[i][j] + list1[i - 1][j - 1]
+                else:
+                    #print "j ==", j
+                    list1[i][j] = list1[i][j] + max(list1[i - 1][j - 1], list1[i - 1][j])
+    return max(list1[-1])

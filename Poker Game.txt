@@ -1,0 +1,223 @@
+import random
+import os
+
+def shuffleDeck(deck):
+    random.shuffle(deck)
+
+def createDeck():
+    suits = 'CDHS'
+    deck = list()
+
+    card = ''
+    suit = ''
+    for i in range(4):
+        suit = suits[i]
+
+        for j in range(1, 14, 1):
+            if j == 1:
+                card = 'A'
+            elif j == 10:
+                card = 'T'
+            elif j == 11:
+                card = 'J'
+            elif j == 12:
+                card = 'Q'
+            elif j == 13:
+                card = 'K'
+            else:
+                card = str(j)
+            deck.append(card + suit)
+
+    return deck
+
+def value(card):
+    if card[0] == 'A':
+        return 14
+    if card[0] == 'K':
+        return 13
+    if card[0] == 'Q':
+        return 12
+    if card[0] == 'J':
+        return 11
+    if card[0] == 'T':
+        return 10
+    if card[0] in '23456789':
+        return int(card[0])
+
+def suit(card):
+    return card[1]
+
+def rank(p):
+    suit_set = set()
+    num_count = dict()
+    for card in p:
+        suit_set.add(suit(card))
+        if value(card) in num_count.keys():
+            num_count[value(card)] = num_count[value(card)] + 1
+        else:
+            num_count[value(card)] = 1
+
+    
+    if 4 in num_count.values():
+        for key, val in num_count.iteritems():
+            if val == 4:
+                # Four of a kind
+                return [8, key]
+    elif 3 in num_count.values():
+        if 2 in num_count.values():
+            for key, val in num_count.iteritems():
+                if val == 3:
+                    # Full house
+                    return [7, key]
+        else:
+            for key, val in num_count.iteritems():
+                if val == 3:
+                    # Three of a kind
+                    return [4, key]
+    elif 2 in num_count.values():
+        if len(num_count.keys()) == 3:
+            high_card = 0
+            for key, val in num_count.iteritems():
+                if val == 2 and key > high_card:
+                    high_card = key
+            # Two pairs
+            return [3, high_card]
+        else:
+            for key, val in num_count.iteritems():
+                if val == 2:
+                    # One pair
+                    return [2, key]
+    else:
+        nums = sorted(list(num_count.keys()))
+        straight = True
+        for i in range(1, len(nums), 1):
+            if nums[i] - nums[i - 1] != 1:
+                straight = False
+
+        if len(suit_set) == 1 and straight:
+            if nums[0] == 10:
+                # Royal flush
+                return [10, 0]
+            else:
+                # Straight flush
+                return [9, nums[0]]
+        elif straight:
+            # Straight:
+            return [5, nums[-1]]
+        elif len(suit_set) == 1:
+            # Flush
+            return [6, nums[-1]]
+        else:
+            # High card
+            return [1, max(map(lambda x: value(x), p))]
+
+def printHand(hand):
+    strHand = ''
+    for i in range(len(hand)):
+        if hand[i][0] != 'T':
+            strHand = strHand + hand[i][0] + getSuit(hand[i][1]) + '  '
+        else:
+            strHand = strHand + '10' + getSuit(hand[i][1]) + '  '
+    print strHand
+
+def getSuit(code):
+    if code == 'C':
+        return chr(5)
+    if code == 'D':
+        return chr(4)
+    if code == 'H':
+        return chr(3)
+    if code == 'S':
+        return chr(6)
+
+def nameCard(value):
+    if value == 14:
+        return 'Ace'
+    if value == 13:
+        return 'King'
+    if value == 12:
+        return 'Queen'
+    if value == 11:
+        return 'Jack'
+    if value in range(1, 11, 1):
+        return str(value)
+
+def describeHand(hand):
+    description = ''
+
+    if hand[0] == 1:
+        description = 'High Card - ' + nameCard(hand[1])
+    if hand[0] == 2:
+        description = 'One Pair - ' + nameCard(hand[1])
+    if hand[0] == 3:
+        description = 'Two Pairs - ' + nameCard(hand[1])
+    if hand[0] == 4:
+        description = 'Three of a Kind - ' + nameCard(hand[1])
+    if hand[0] == 5:
+        description = 'Straight'
+    if hand[0] == 6:
+        description = 'Flush'
+    if hand[0] == 7:
+        description = 'Full House with Three ' + nameCard(hand[1]) + 's'
+    if hand[0] == 8:
+        description = 'Four of a Kind - ' + nameCard(hand[1])
+    if hand[0] == 9:
+        description = 'Straight Flush'
+    if hand[0] == 10:
+        description = 'Royal Flush'
+
+    return description
+
+key = ''
+stats = [0, 0]
+while True:
+    if key != '':
+        break
+    else:
+        os.system('cls')  # on windows
+        print 'Stats:'
+        print 'YOU:     ', stats[0]
+        print 'COMPUTER:', stats[1]
+        print '\n'
+
+        deck = createDeck()
+        shuffleDeck(deck)
+
+        p1 = deck[:5]
+        p2 = deck[5:10]
+        printHand(p1)
+        ph1 = rank(p1)
+        print describeHand(ph1), '\n'
+        changeList = ['', '', '', '']
+        while len(changeList) > 3:
+            inp = raw_input('Select the cards to change...\n')
+            changeList = inp.strip().split(' ')
+        if len(changeList) != 0 and changeList[0] != '':
+            for i in range(len(changeList)):
+                card = changeList[i]
+                p1[int(card) - 1] = deck[10+i]
+
+        ph1 = rank(p1)
+        ph2 = rank(p2)
+        
+
+        printHand(p1)
+        print describeHand(ph1), '\n\n'
+        print 'Computer:'
+        printHand(p2)
+        print describeHand(ph2), '\n'
+
+        if ph1[0] > ph2[0]:
+            print 'You win...\n'
+            stats[0] = stats[0] + 1
+        elif ph1[0] == ph2[0] and ph1[1] > ph2[1]:
+            print 'You win...\n'
+            stats[0] = stats[0] + 1
+        else:
+            print 'You lose...\n'
+            stats[1] = stats[1] + 1
+
+        print '\n'
+
+        key = raw_input('Press any key for exit...\n')
+
