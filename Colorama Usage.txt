@@ -1,0 +1,11 @@
+from colorama import init, Fore, Back, Style
+init()
+
+def test2():
+    return Fore.RED + 's' + Fore.WHITE + 'ome red text Deneme'
+
+def test3():
+    return Back.BLUE + ' ' * 10 + Back.BLACK
+
+print(test2())
+print(test3())
