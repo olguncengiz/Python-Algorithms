@@ -1,0 +1,29 @@
+def prime_num():
+    prime_numbers = []
+    number = 2
+    while True:
+        isPrime = True
+        for i in prime_numbers:
+            if i ** 2 > number:
+                break
+            isPrime = isPrime and (number % i != 0)
+
+        if isPrime:
+            yield number
+            prime_numbers.append(number)
+        number = number + 1
+
+
+========== OLD CODE ==========
+def prime_num():
+    prime_numbers = []
+    number = 2
+    while True:
+        isPrime = True
+        for i in prime_numbers:
+             isPrime = isPrime and (number % i != 0)
+
+        if isPrime:
+            yield number
+            prime_numbers.append(number)
+        number = number + 1

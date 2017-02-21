@@ -1,0 +1,16 @@
+x = [1, 2, 4, 'a', 4, 5, 'b', 'c', 6, 7, 9]
+
+f = lambda: (i for i in x if ((x.index(i) % 2 == 0) or (((type(i) == int) and (i % 2 == 1)))))
+g = f()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()
+print g.next()

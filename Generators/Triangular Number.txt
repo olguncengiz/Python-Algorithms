@@ -1,0 +1,7 @@
+def triangular_number():
+    a = 1
+    b = 1
+    while True:
+        yield b
+        a = a + 1
+        b = b + a
