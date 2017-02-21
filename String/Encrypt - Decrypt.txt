@@ -1,0 +1,29 @@
+import os
+
+def encrypt(read_from, write_to, passwd):
+    fr = open(read_from, 'r')
+    fw = open(write_to, 'w')
+    message = fr.read()
+    text = list()
+
+    for i in range(len(message)):
+        text.append(ord(message[i]) ^ ord(passwd[i%len(passwd)]))
+
+    fw.write(reduce(lambda x, y: str(x) + ', ' + str(y), text))
+
+def decrypt(read_from, write_to, passwd):
+    fr = open(read_from, 'r')
+    fw = open(write_to, 'w')
+    message = fr.read()
+    mlist = message.split(',')
+    text = ''
+
+    for i in range(len(mlist)):
+        char = chr(int(mlist[i]) ^ ord(passwd[i%len(passwd)]))
+        text = text + char
+
+    fw.write(text)
+
+passwd = 'melike'
+#encrypt('message.txt', 'cipher.txt', passwd)
+decrypt('cipher.txt', 'message.txt', passwd)

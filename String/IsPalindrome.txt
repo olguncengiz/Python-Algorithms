@@ -1,0 +1,13 @@
+def ispalindrome(number):
+    snum = str(number)
+    ispalindrome = True
+    while (len(snum) > 1):
+        first = snum[0]
+        last = snum[-1]
+        if first == last:
+            snum = snum[1:]
+            snum = snum[:-1]
+        else:
+            ispalindrome = False
+            break
+    return ispalindrome

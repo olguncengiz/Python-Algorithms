@@ -1,0 +1,25 @@
+def substrings(s):
+    cnt = 0
+    for i in range(len(s) - 1):
+        substring = s[i]
+        j = i + 1
+        
+        while j < len(s) and s[j] == substring[0]:
+            substring += s[j]
+            j += 1
+
+        k = len(substring)
+        while j < len(s) and k > 0:
+            if substring[0] != s[j]:
+                substring += s[j]
+                k -= 1
+            else:
+                break
+            j += 1
+        if k == 0:
+            cnt += 1
+    return cnt
+
+
+string = '100110'
+print substrings(string)
