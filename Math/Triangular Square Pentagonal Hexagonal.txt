@@ -1,0 +1,86 @@
+def triangle(n):
+    return n * (n + 1) / 2
+
+def square(n):
+    return n * n
+
+def pentagonal(n):
+    return n * ((3 * n) - 1) / 2
+
+def hexagonal(n):
+    return n * ((2 * n) - 1)
+
+def heptagonal(n):
+    return n * ((5 * n) - 3) / 2
+
+def octagonal(n):
+    return n * ((3 * n) - 2)
+
+def findCycle(cycle, lists, numbers):
+    if len(cycle) == 6:
+        n1_2d = cycle[0] / 100
+        n6_2d = cycle[5] - (cycle[5] / 100) * 100
+        #print n1_2d, n6_2d
+        if n1_2d == n6_2d:
+            print 'Found', cycle, lists
+            print 'Sum', reduce(lambda x, y: x + y, cycle)
+            return cycle, lists
+    else:
+        lastNum = cycle[-1]
+        newNum = (lastNum - (lastNum / 100) * 100) * 100
+
+        for i in range(len(numbers)):
+            if i in lists:
+                continue
+            else:
+                for j in range(len(numbers[i])):
+                    #print cycle, lists, i, newNum, numbers[i][j]
+                    if numbers[i][j] - newNum < 100 and numbers[i][j] >= newNum:
+                        cycle.append(numbers[i][j])
+                        lists.append(i)
+                        findCycle(cycle, lists, numbers)
+                        del cycle[-1]
+                        del lists[-1]
+
+numbers = list()
+numbers.append(list())
+numbers.append(list())
+numbers.append(list())
+numbers.append(list())
+numbers.append(list())
+numbers.append(list())
+
+i = 1
+while True:
+    tr = triangle(i)
+    sq = square(i)
+    pe = pentagonal(i)
+    hx = hexagonal(i)
+    hp = heptagonal(i)
+    oc = octagonal(i)
+
+    if tr > 9999 and sq > 9999 and pe > 9999 and hx > 9999 and hp > 9999 and oc > 9999:
+        break
+
+    if tr >= 1000 and tr <= 9999:
+        numbers[0].append(tr)
+    if sq >= 1000 and sq <= 9999:
+        numbers[1].append(sq)
+    if pe >= 1000 and pe <= 9999:
+        numbers[2].append(pe)
+    if hx >= 1000 and hx <= 9999:
+        numbers[3].append(hx)
+    if hp >= 1000 and hp <= 9999:
+        numbers[4].append(hp)
+    if oc >= 1000 and oc <= 9999:
+        numbers[5].append(oc)
+    i = i + 1
+
+for a in range(len(numbers)):
+    print numbers[a]
+
+
+for x in range(len(numbers[0])):
+    cycle = [numbers[0][x]]
+    lists = [0]
+    findCycle(cycle, lists, numbers)

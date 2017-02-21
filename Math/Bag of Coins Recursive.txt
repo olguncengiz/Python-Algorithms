@@ -1,0 +1,32 @@
+count = 0
+coins = [1, 2, 5, 10, 20, 50, 100, 200]
+
+def bag_total(bag):
+	total = 0
+	for i in range(len(bag)):
+		total = total + bag[i]
+	return total
+
+def count_2_pound(bag):
+	global count
+	if bag_total(bag) > 200:
+		return False
+	elif bag_total(bag) == 200:
+		count = count + 1
+		print "Solution:", bag, count
+		return True
+	else:
+		i = 0
+		while i < len(coins):
+			if len(bag) > 0 and max(bag) > coins[i]:
+				i = i + 1
+			else:
+				bag.append(coins[i])
+				count_2_pound(bag)
+				if len(bag) > 0:
+					bag.pop()
+				i = i + 1
+
+bag = []
+count_2_pound(bag)
+print count

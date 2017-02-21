@@ -1,0 +1,6 @@
+def factors(n):    
+    return set(reduce(list.__add__, ([i, n//i] for i in range(1, int(n**0.5) + 1) if n % i == 0)))
+
+# Highest Common Factor
+def hcf(num_list):
+    return max(reduce(lambda x, y: factors(x).intersection(factors(y)), num_list))

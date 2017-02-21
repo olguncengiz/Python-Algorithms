@@ -1,0 +1,44 @@
+def print_lex(num_list, lex_set, lex):
+	# Control for list count (if 1,000,000 items in list, then return)
+	#if len(lex_set) == 1000000:
+	#	return
+
+	if len(num_list) == 1:
+		num = num_list.pop()
+		lex = lex + str(num)
+		if type(lex_set) == set:
+			lex_set.add(lex)
+		elif type(lex_set) == list:
+			lex_set.append(lex)
+		num_list.append(num)
+	else:
+		i = 0
+		while i < len(num_list):
+			num = num_list.pop(i)
+			lex_len = len(lex)
+			lex = lex + str(num)
+			print_lex(num_list, lex_set, lex)
+			num_list.insert(i, num)
+			lex = lex[:lex_len]
+			i = i + 1
+
+def getPermutations(item_list):
+	lst = list(item_list)
+	lexl = set()
+	print_lex(lst, lexl, "")
+	lexl = list(lexl)
+	lexl.sort()
+	return lexl
+
+def getCombinations(item_list):
+	lst = list(item_list)
+	lexl = list()
+	print_lex(lst, lexl, "")
+	lexl.sort()
+	return lexl
+
+print getCombinations("121")
+print getPermutations("121")
+
+print getCombinations([0, 1, 1])
+print getPermutations([0, 1, 1])

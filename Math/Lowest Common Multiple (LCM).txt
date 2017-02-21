@@ -1,0 +1,34 @@
+def prime_num():
+    prime_numbers = []
+    number = 2
+    while True:
+        isPrime = True
+        for i in prime_numbers:
+            if i ** 2 > number:
+                break
+            isPrime = isPrime and (number % i != 0)
+
+        if isPrime:
+            yield number
+            prime_numbers.append(number)
+        number = number + 1
+
+# Lowest Common Multiple
+def lcm(num_list):
+    result = 1
+    p = prime_num()
+    prime = p.next()
+    while reduce(lambda x, y: x * y, num_list) > 1:
+        divided = False
+        for i in range(len(num_list)):
+            if num_list[i] % prime == 0:
+                num_list[i] = num_list[i] / prime
+                divided = True
+        if not divided:
+            prime = p.next()
+        else:
+            result = result * prime
+
+    return result 
+    
+print lcm([4, 10])

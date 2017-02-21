@@ -1,0 +1,1 @@
+print reduce(lambda a, b: int(a) + int(b), str(reduce(lambda x, y: x * y, range(1, 100, 1))))

@@ -1,0 +1,2 @@
+def base2(num):
+    return "{0:b}".format(num)

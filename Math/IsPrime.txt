@@ -1,0 +1,51 @@
+import math
+
+def isprime(n):
+	if n < 0:
+		return False
+	elif n == 0:
+		return False
+	elif n == 1:
+		return False
+	elif n < 4:
+		return True
+	elif n % 2 == 0:
+		return False
+	elif n < 9:
+		return True
+	elif n % 3 == 0:
+		return False
+	else:
+		r = int(math.sqrt(n))
+		f = 5
+		while f <= r:
+			if n % f == 0:
+				return False
+			if n % (f + 2) == 0:
+				return False
+			f = f + 6
+		return True
+
+
+# OLD APPROACH (USE ABOVE FUNCTION)
+def isprime(n):
+    if n == 1:
+        return False
+    elif n < 4:
+        return True
+    elif n % 2 == 0:
+        return False
+    elif n < 9:
+        return True
+    elif n % 3 == 0:
+        return False
+    else:
+        r = int(math.sqrt(n))
+        f = 5
+        while f <= r:
+            if n % f == 0:
+                return False
+            if n % (f + 2) == 0:
+                return False
+            f = f + 6
+        return True

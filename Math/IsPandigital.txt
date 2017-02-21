@@ -1,0 +1,25 @@
+def isPandigital(number, start=0):
+    w_number = str(number)
+    n = len(w_number)
+
+    p_num = sorted(w_number)
+
+    for i in range(n):
+        if str(i + start) != p_num[i]:
+            return False
+
+    return True
+
+===================== OLD CODE =====================
+
+def isPandigital(number):
+    w_number = str(number)
+    n = len(w_number)
+
+    p_num = sorted(w_number)
+
+    for i in range(1, n + 1, 1):
+        if str(i) != p_num[i - 1]:
+            return False
+
+    return True
