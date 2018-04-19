@@ -1,0 +1,47 @@
+'''
+Assume that you have an array of words:
+
+words = [“i”, “am”, “here”]
+
+And a sentence:
+
+sentence = “iamhere”
+
+Write a function which will return True if this sentence can be built using the words in this array, or False if not.
+NOTE: There are no punctuation letterss or spaces in either words or sentence. All letters are lower case English letters. The words can be in any order and can occur multiple times in the sentence.
+
+TESTS:
+Words = [“i”, “am”, “here”]
+1-  sentence = “iamhere” => True
+2-  sentence = “amihere” => True
+3-  sentence = “amamamiherehere” => True
+4-  sentence = “iamthere” => False
+5-  sentence = “iahere” => False
+
+NOTE: Some of the words in the array can exists fully in other words.
+
+For example: 
+words = [“i”, “am”, “the”, “here”, “there”] (Word "the" and "here" can be found in the word "there")
+Sentence = “thereiam” => True
+'''
+
+def exists(words, sentence):
+    if sentence in words:
+        return True
+    else:
+        for i in range(len(sentence)):
+            subWord = sentence[:i + 1]
+            if subWord in words:
+                newWord = sentence[i + 1:]
+                if exists(words, newWord):
+                    return True
+        return False
+
+def main():
+    words = ["i", "am", "here", "the", "there"]
+    sentence = "thereiamhere"
+    print(exists(words, sentence))
+
+
+if __name__ == '__main__':
+    main()
